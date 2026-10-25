@@ -1,0 +1,56 @@
+# =====================================================================
+# Cau hinh chung cho toan bo du an du bao muc nuoc Tan Chau
+# Sua o day, khong sua rai rac trong tung file train
+# =====================================================================
+
+# Đường dẫn tương đối, tính từ thư mục chứa file này (gốc repo).
+# processed_dir: train_final.csv, valid_final.csv, test_final.csv do src/preprocessing/preprocess_features.py tạo ra.
+duong_dan:
+  processed_dir: "data/processed"
+  targets_dir: "data/targets"
+  model_dir: "models"
+  ket_qua_dir: "results"
+  hinh_anh_dir: "results/figures"
+
+cot:
+  date: "date"
+  muc_nuoc: "H_TanChau"
+  muc_nuoc_hien_tai: "H_hientai"      # dung lam baseline persistence
+
+nguong:
+  bao_dong_m: 3.5        # BĐ I tại Tân Châu theo QĐ 05/2020/QĐ-TTg (bản cũ ghi 3.0 là của Châu Đốc); không mã nào dùng tham số này
+  m2_vuot_nguong_m: 2.5  # nguong cho M2 (dung 2.5 vi co nam khong vuot 3.0)
+  mua_lu_m: 2.0          # nguong xac dinh bat dau / ket thuc mua lu (M3)
+  han_m: 0.5             # nguong muc nuoc thap mua kho (M4)
+
+mua_vu:
+  thang_mua_lu: [8, 9, 10, 11]     # M2
+  thang_mua_lu_rong: [5, 6, 7, 8, 9, 10, 11, 12]  # M3
+  thang_mua_kho: [1, 2, 3, 4, 5]   # M4
+
+m1:
+  horizons: [1, 2, 3, 5, 7, 14]
+
+m2:
+  cua_so_ngay: 10        # dem so ngay vuot nguong trong 10 ngay toi
+
+m4:
+  horizons: [7, 15]
+
+# Chia du lieu theo thoi gian (dung dung mocs cua 3 file da co)
+chia_du_lieu:
+  train_den: "2021-12-31"
+  valid_den: "2022-12-31"
+  # phan con lai (2023-2024) la test
+
+# Cach tune giong nhau cho TAT CA model
+tuning:
+  n_iter: 20             # so to hop tham so thu cho moi thuat toan
+  n_splits: 5            # so fold cua TimeSeriesSplit
+  gap: 14                # so ngay cach giua train va valid trong moi fold (chong leakage)
+  random_state: 42
+  n_jobs: -1
+  scoring_hoi_quy: "neg_root_mean_squared_error"
+  scoring_phan_loai: "average_precision"
+
+thuat_toan: ["dt", "rf", "lgbm", "catboost", "svr"]

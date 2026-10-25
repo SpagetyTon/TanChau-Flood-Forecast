@@ -1,0 +1,20 @@
+feature,source,role,processing_note
+ngay,Calendar,Key,UTC daily date
+mua_tanchau,NASA GPM IMERG V07,Predictor,"Daily accumulated precipitation; half-hourly precipitation rate × 0.5 h, summed daily, spatial mean over Tân Châu analysis region"
+mua_kratie,NASA GPM IMERG V07,Predictor,Daily accumulated precipitation for Kratie analysis region
+mua_pakse,NASA GPM IMERG V07,Predictor,Daily accumulated precipitation for Pakse analysis region
+do_am_tang1,ERA5-Land Daily Aggregated,Predictor,volumetric_soil_water_layer_1; spatial mean
+do_am_tang2,ERA5-Land Daily Aggregated,Predictor,volumetric_soil_water_layer_2; spatial mean
+do_am_tang3,ERA5-Land Daily Aggregated,Predictor,volumetric_soil_water_layer_3; spatial mean
+do_am_tang4,ERA5-Land Daily Aggregated,Predictor,volumetric_soil_water_layer_4; spatial mean
+dong_chay_tong,ERA5-Land Daily Aggregated,Predictor,runoff_sum; spatial mean
+dong_chay_mat,ERA5-Land Daily Aggregated,Predictor,surface_runoff_sum; spatial mean
+dong_chay_ngam,ERA5-Land Daily Aggregated,Predictor,sub_surface_runoff_sum; spatial mean
+boc_hoi,ERA5-Land Daily Aggregated,Predictor,total_evaporation_sum; spatial mean
+boc_hoi_tiem_nang,ERA5-Land Daily Aggregated,Predictor,potential_evaporation_sum; spatial mean
+nhiet_do,ERA5-Land Daily Aggregated,Predictor,temperature_2m; spatial mean
+diem_suong,ERA5-Land Daily Aggregated,Predictor,dewpoint_temperature_2m; spatial mean
+ap_suat,ERA5-Land Daily Aggregated,Predictor,surface_pressure; spatial mean
+gio_u,ERA5-Land Daily Aggregated,Predictor,u_component_of_wind_10m; spatial mean
+gio_v,ERA5-Land Daily Aggregated,Predictor,v_component_of_wind_10m; spatial mean
+buc_xa,ERA5-Land Daily Aggregated,Predictor,surface_solar_radiation_downwards_sum; spatial mean

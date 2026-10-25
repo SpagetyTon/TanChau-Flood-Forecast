@@ -1,0 +1,7 @@
+station,reference_lat,reference_lon,glofas_grid_lat,glofas_grid_lon,snap_method,snap_distance_deg
+ChiangSaen,20.2755,100.090986,20.275,100.075,nearest high-flow river cell within 0.1°,0.015993817430492954
+LuangPrabang,19.892,102.137,19.875,102.125,nearest high-flow river cell within 0.1°,0.020808652046684632
+Vientiane,17.93098,102.6156,17.925,102.625,nearest high-flow river cell within 0.1°,0.011140933533595855
+Pakse,15.120617,105.78276,15.125,105.775,nearest high-flow river cell within 0.1°,0.008912254989611647
+StungTreng,13.547263,106.015905,13.575,106.025,nearest high-flow river cell within 0.1°,0.029190070126672265
+Kratie,12.47827,106.015,12.475,106.025,nearest high-flow river cell within 0.1°,0.010521069337291999

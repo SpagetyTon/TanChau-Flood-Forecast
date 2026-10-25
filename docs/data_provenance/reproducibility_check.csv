@@ -1,0 +1,4 @@
+key,shape_equal,columns_equal,max_abs_diff,exact_string_equal
+raw_split_remerge,True,True,4.235164736271502e-22,False
+final28_remerge,True,True,0.0,True
+extended35_remerge,True,True,0.0,True

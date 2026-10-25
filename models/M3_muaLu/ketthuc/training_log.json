@@ -1,0 +1,54 @@
+{
+  "ngay_train": "2026-09-26 11:26:34",
+  "best_params": {
+    "dt": {
+      "min_samples_split": 20,
+      "min_samples_leaf": 20,
+      "max_depth": 8
+    },
+    "rf": {
+      "n_estimators": 200,
+      "min_samples_leaf": 10,
+      "max_features": "sqrt",
+      "max_depth": 10
+    },
+    "lgbm": {
+      "subsample": 0.8,
+      "reg_lambda": 10,
+      "num_leaves": 63,
+      "n_estimators": 500,
+      "min_child_samples": 20,
+      "learning_rate": 0.01,
+      "colsample_bytree": 0.5
+    },
+    "catboost": {
+      "learning_rate": 0.01,
+      "l2_leaf_reg": 10,
+      "iterations": 500,
+      "depth": 6
+    },
+    "svr": {
+      "kernel": "rbf",
+      "gamma": "scale",
+      "epsilon": 0.1,
+      "C": 10
+    }
+  },
+  "cv_score_tren_train": {
+    "dt": -19.310595111573587,
+    "rf": -13.766230561114577,
+    "lgbm": -16.072320630186425,
+    "catboost": -14.164249855395777,
+    "svr": -14.855254544391084
+  },
+  "bai_toan": "M3_ngay_den_ketthuc",
+  "target": "ngay_den_ketthuc",
+  "thang_loc": [
+    9,
+    10,
+    11,
+    12
+  ],
+  "n_train": 488,
+  "task": "hoi_quy"
+}

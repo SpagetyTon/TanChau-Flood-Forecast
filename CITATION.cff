@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the accompanying paper."
+title: "Tan Chau forecast – flood map – population exposure chain"
+version: "1.0-paper"
+license: MIT
+authors:
+  # TODO: add all six authors (family name, given names, ORCID)
+  - family-names: "TODO"
+    given-names: "TODO"
+repository-code: "https://github.com/SpagetyTon/tanchau-flood-chain"

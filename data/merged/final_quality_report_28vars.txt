@@ -1,0 +1,14 @@
+MEKONG–TAN CHAU FINAL DATA QUALITY REPORT
+==========================================
+Rows: 3653
+Date range: 2015-01-01 -> 2024-12-31
+GLDAS predictors: 21
+GloFAS predictors: 6
+Total predictors: 27
+Target columns: 1 (H_TanChau)
+Total model variables: 28
+Duplicate dates: 0
+Missing GLDAS predictor cells: 0
+Missing GloFAS predictor cells: 0
+Missing H_TanChau days: 4
+Missing H_TanChau dates: 2019-03-26, 2019-03-27, 2019-03-28, 2024-11-12

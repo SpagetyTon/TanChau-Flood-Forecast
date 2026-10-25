@@ -1,0 +1,54 @@
+{
+  "ngay_train": "2026-09-26 11:35:43",
+  "best_params": {
+    "dt": {
+      "min_samples_split": 10,
+      "min_samples_leaf": 10,
+      "max_depth": 3
+    },
+    "rf": {
+      "n_estimators": 800,
+      "min_samples_leaf": 10,
+      "max_features": "sqrt",
+      "max_depth": 4
+    },
+    "lgbm": {
+      "subsample": 0.9,
+      "reg_lambda": 0,
+      "num_leaves": 31,
+      "n_estimators": 300,
+      "min_child_samples": 40,
+      "learning_rate": 0.03,
+      "colsample_bytree": 0.5
+    },
+    "catboost": {
+      "learning_rate": 0.01,
+      "l2_leaf_reg": 5,
+      "iterations": 300,
+      "depth": 6
+    },
+    "svr": {
+      "kernel": "rbf",
+      "gamma": 0.001,
+      "C": 1
+    }
+  },
+  "cv_score_tren_train": {
+    "dt": 0.37217262562018705,
+    "rf": 0.48584980180741316,
+    "lgbm": 0.46078535737201926,
+    "catboost": 0.4980445004184423,
+    "svr": 0.5064882427389611
+  },
+  "bai_toan": "M4_han_7ngay",
+  "target": "han_7",
+  "thang_loc": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "ty_le_duong_train": 0.26912181303116145,
+  "task": "phan_loai"
+}

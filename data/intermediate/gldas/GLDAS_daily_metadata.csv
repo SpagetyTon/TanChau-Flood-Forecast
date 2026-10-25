@@ -1,0 +1,22 @@
+feature,daily_aggregation,daily_unit
+AvgSurfT_inst,MEAN of 8 three-hour values,same as source
+CanopInt_inst,MEAN of 8 three-hour values,same as source
+ECanop_tavg,MEAN of 8 three-hour values,same as source
+ESoil_tavg,MEAN of 8 three-hour values,same as source
+Evap_tavg,SUM(value × 10800 s) across 8 timesteps,kg m-2 day-1 (≈ mm/day for water)
+LWdown_f_tavg,MEAN of 8 three-hour values,same as source
+PotEvap_tavg,MEAN of 8 three-hour values,same as source
+Psurf_f_inst,MEAN of 8 three-hour values,same as source
+Qair_f_inst,MEAN of 8 three-hour values,same as source
+Qs_acc,SUM of 8 three-hour accumulations,kg m-2 day-1
+Qsb_acc,SUM of 8 three-hour accumulations,kg m-2 day-1
+Rainf_f_tavg,SUM(value × 10800 s) across 8 timesteps,kg m-2 day-1 (≈ mm/day for water)
+RootMoist_inst,MEAN of 8 three-hour values,same as source
+SoilMoi0_10cm_inst,MEAN of 8 three-hour values,same as source
+SoilMoi10_40cm_inst,MEAN of 8 three-hour values,same as source
+SoilMoi40_100cm_inst,MEAN of 8 three-hour values,same as source
+SoilMoi100_200cm_inst,MEAN of 8 three-hour values,same as source
+SWdown_f_tavg,MEAN of 8 three-hour values,same as source
+Tair_f_inst,MEAN of 8 three-hour values,same as source
+Tveg_tavg,MEAN of 8 three-hour values,same as source
+Wind_f_inst,MEAN of 8 three-hour values,same as source

@@ -1,0 +1,54 @@
+{
+  "ngay_train": "2026-09-26 11:44:48",
+  "best_params": {
+    "dt": {
+      "min_samples_split": 10,
+      "min_samples_leaf": 50,
+      "max_depth": 3
+    },
+    "rf": {
+      "n_estimators": 800,
+      "min_samples_leaf": 10,
+      "max_features": "sqrt",
+      "max_depth": 4
+    },
+    "lgbm": {
+      "subsample": 0.9,
+      "reg_lambda": 0,
+      "num_leaves": 31,
+      "n_estimators": 300,
+      "min_child_samples": 20,
+      "learning_rate": 0.03,
+      "colsample_bytree": 0.9
+    },
+    "catboost": {
+      "learning_rate": 0.01,
+      "l2_leaf_reg": 10,
+      "iterations": 300,
+      "depth": 4
+    },
+    "svr": {
+      "kernel": "rbf",
+      "gamma": 0.001,
+      "C": 1
+    }
+  },
+  "cv_score_tren_train": {
+    "dt": 0.3995755625835008,
+    "rf": 0.5371193496425695,
+    "lgbm": 0.5397358905525981,
+    "catboost": 0.5252795129446894,
+    "svr": 0.5307901488342075
+  },
+  "bai_toan": "M4_han_15ngay",
+  "target": "han_15",
+  "thang_loc": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "ty_le_duong_train": 0.29367327667610954,
+  "task": "phan_loai"
+}

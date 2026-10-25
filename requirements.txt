@@ -1,0 +1,18 @@
+# Môi trường huấn luyện và tái lập mô hình (src/preprocessing, src/training)
+# Python 3.12. Mô hình trong models/ được lưu bằng scikit-learn 1.9 và pandas 3.x:
+# pandas 2.x không tải được imputer.pkl.
+# Đã kiểm tra tải lại mô hình và dự báo khớp với results/ bằng đúng các phiên bản dưới đây.
+numpy==2.5.4
+pandas==3.1.0
+scipy==1.18.1
+scikit-learn==1.9.1
+lightgbm==4.7.0
+catboost==1.2.10
+joblib==1.6.0
+pyyaml
+matplotlib
+
+# Thu thập dữ liệu có requirements riêng trong từng thư mục:
+#   src/data_collection/gldas/requirements.txt
+#   src/data_collection/earth_engine/requirements_gee.txt
+#   src/data_collection/merge_and_validation/requirements.txt

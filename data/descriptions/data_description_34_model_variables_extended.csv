@@ -1,0 +1,35 @@
+feature,source,role,daily_processing
+AvgSurfT_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+CanopInt_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+ECanop_tavg,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+ESoil_tavg,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+Evap_tavg,GLDAS-2.1,Predictor,"Integrate rate ×10800 s, then SUM"
+LWdown_f_tavg,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+PotEvap_tavg,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+Psurf_f_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+Qair_f_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+Qs_acc,GLDAS-2.1,Predictor,SUM 8 timesteps/day
+Qsb_acc,GLDAS-2.1,Predictor,SUM 8 timesteps/day
+Rainf_f_tavg,GLDAS-2.1,Predictor,"Integrate rate ×10800 s, then SUM"
+RootMoist_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+SoilMoi0_10cm_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+SoilMoi10_40cm_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+SoilMoi40_100cm_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+SoilMoi100_200cm_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+SWdown_f_tavg,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+Tair_f_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+Tveg_tavg,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+Wind_f_inst,GLDAS-2.1,Predictor,Daily mean of 8 timesteps
+Q_ChiangSaen,GloFAS v5.0,Predictor,Daily; valid_time shifted -1 day
+Q_LuangPrabang,GloFAS v5.0,Predictor,Daily; valid_time shifted -1 day
+Q_Vientiane,GloFAS v5.0,Predictor,Daily; valid_time shifted -1 day
+Q_Pakse,GloFAS v5.0,Predictor,Daily; valid_time shifted -1 day
+Q_StungTreng,GloFAS v5.0,Predictor,Daily; valid_time shifted -1 day
+Q_Kratie,GloFAS v5.0,Predictor,Daily; valid_time shifted -1 day
+H_TanChau,MRC,Target,Mean water level over 07:00–07:00 ICT hydrological day
+mua_tanchau,IMERG V07,Predictor,"Daily accumulated precipitation, Tân Châu region"
+mua_kratie,IMERG V07,Predictor,"Daily accumulated precipitation, Kratie region"
+mua_pakse,IMERG V07,Predictor,"Daily accumulated precipitation, Pakse region"
+diem_suong,ERA5-Land,Predictor,Daily dewpoint temperature
+gio_u,ERA5-Land,Predictor,Daily 10 m U wind component
+gio_v,ERA5-Land,Predictor,Daily 10 m V wind component

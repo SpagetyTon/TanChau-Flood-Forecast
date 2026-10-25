@@ -1,0 +1,54 @@
+{
+  "ngay_train": "2026-09-26 10:56:12",
+  "best_params": {
+    "dt": {
+      "min_samples_split": 10,
+      "min_samples_leaf": 50,
+      "max_depth": 4
+    },
+    "rf": {
+      "n_estimators": 400,
+      "min_samples_leaf": 5,
+      "max_features": 0.3,
+      "max_depth": 6
+    },
+    "lgbm": {
+      "subsample": 0.8,
+      "reg_lambda": 10,
+      "num_leaves": 15,
+      "n_estimators": 300,
+      "min_child_samples": 40,
+      "learning_rate": 0.03,
+      "colsample_bytree": 0.7
+    },
+    "catboost": {
+      "learning_rate": 0.03,
+      "l2_leaf_reg": 10,
+      "iterations": 800,
+      "depth": 4
+    },
+    "svr": {
+      "kernel": "rbf",
+      "gamma": "scale",
+      "epsilon": 0.05,
+      "C": 100
+    }
+  },
+  "cv_score_tren_train": {
+    "dt": -2.921054662444445,
+    "rf": -2.7879208267720714,
+    "lgbm": -2.8262658875640527,
+    "catboost": NaN,
+    "svr": -3.500344723012895
+  },
+  "bai_toan": "M2_so_ngay_tren_2.5m",
+  "target": "so_ngay_tren_nguong_10",
+  "thang_loc": [
+    8,
+    9,
+    10,
+    11
+  ],
+  "n_train": 854,
+  "task": "hoi_quy"
+}

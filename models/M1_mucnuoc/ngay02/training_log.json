@@ -1,0 +1,49 @@
+{
+  "ngay_train": "2026-09-26 00:10:57",
+  "best_params": {
+    "dt": {
+      "min_samples_split": 2,
+      "min_samples_leaf": 5,
+      "max_depth": 4
+    },
+    "rf": {
+      "n_estimators": 600,
+      "min_samples_leaf": 5,
+      "max_features": 0.8,
+      "max_depth": 14
+    },
+    "lgbm": {
+      "subsample": 0.8,
+      "reg_lambda": 0,
+      "num_leaves": 63,
+      "n_estimators": 800,
+      "min_child_samples": 5,
+      "learning_rate": 0.01,
+      "colsample_bytree": 0.9
+    },
+    "catboost": {
+      "learning_rate": 0.05,
+      "l2_leaf_reg": 10,
+      "iterations": 500,
+      "depth": 4
+    },
+    "svr": {
+      "kernel": "rbf",
+      "gamma": 0.001,
+      "epsilon": 0.01,
+      "C": 10
+    }
+  },
+  "cv_score_tren_train": {
+    "dt": -0.2122083580536691,
+    "rf": -0.19446202909011717,
+    "lgbm": -0.19595661774289014,
+    "catboost": -0.213676669913688,
+    "svr": -0.14754954419712865
+  },
+  "bai_toan": "M1_ngay2",
+  "target": "target_ngay2",
+  "thang_loc": null,
+  "n_train": 2557,
+  "task": "hoi_quy"
+}

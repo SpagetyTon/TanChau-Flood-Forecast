@@ -1,0 +1,62 @@
+{
+  "manifest": "../../../data/support/manifest/subset_GLDAS_NOAH025_3H_2.1_20260904_154257_.txt",
+  "upstream_geojson": "../../../data/support/spatial/tanchau_upstream_hydrobasins_lev08.geojson",
+  "output_dir": "../../../data/intermediate/gldas",
+  "cache_dir": "cache",
+  "start_date": "2015-01-01",
+  "end_date": "2024-12-31",
+  "selected_variables": [
+    "AvgSurfT_inst",
+    "CanopInt_inst",
+    "ECanop_tavg",
+    "ESoil_tavg",
+    "Evap_tavg",
+    "LWdown_f_tavg",
+    "PotEvap_tavg",
+    "Psurf_f_inst",
+    "Qair_f_inst",
+    "Qs_acc",
+    "Qsb_acc",
+    "Rainf_f_tavg",
+    "RootMoist_inst",
+    "SoilMoi0_10cm_inst",
+    "SoilMoi10_40cm_inst",
+    "SoilMoi40_100cm_inst",
+    "SoilMoi100_200cm_inst",
+    "SWdown_f_tavg",
+    "Tair_f_inst",
+    "Tveg_tavg",
+    "Wind_f_inst"
+  ],
+  "sum_variables": [
+    "Qs_acc",
+    "Qsb_acc"
+  ],
+  "integrate_10800s_variables": [
+    "Rainf_f_tavg",
+    "Evap_tavg"
+  ],
+  "mean_variables": [
+    "AvgSurfT_inst",
+    "CanopInt_inst",
+    "ECanop_tavg",
+    "ESoil_tavg",
+    "LWdown_f_tavg",
+    "PotEvap_tavg",
+    "Psurf_f_inst",
+    "Qair_f_inst",
+    "RootMoist_inst",
+    "SoilMoi0_10cm_inst",
+    "SoilMoi10_40cm_inst",
+    "SoilMoi40_100cm_inst",
+    "SoilMoi100_200cm_inst",
+    "SWdown_f_tavg",
+    "Tair_f_inst",
+    "Tveg_tavg",
+    "Wind_f_inst"
+  ],
+  "expected_urls": 29224,
+  "expected_steps_per_day": 8,
+  "hydrological_day": "07:00 ICT to 07:00 ICT (equivalent to 00:00-24:00 UTC)",
+  "delete_downloaded_3hourly_after_each_day": true
+}

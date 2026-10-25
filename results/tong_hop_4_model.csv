@@ -1,0 +1,7 @@
+﻿bai_toan,model_tot_nhat,chi_so_chinh,gia_tri,cai_thien_vs_baseline_%
+M1 - Muc nuoc 1/2/3/5/7/14 ngay,Blend,RMSE (m),0.1319,38.68
+M2 - So ngay vuot nguong trong 10 ngay,Blend,RMSE (ngay),1.5512,58.07
+M3 - M3_ngay_den_batdau,Climatology,RMSE (ngay),28.6343,0.0
+M3 - M3_ngay_den_ketthuc,svr,RMSE (ngay),5.4449,41.82
+M4 - Canh bao han 15 ngay,svr,CSI,0.6131,
+M4 - Canh bao han 7 ngay,svr,CSI,0.5895,

@@ -1,0 +1,8 @@
+﻿model,hit,miss,false_alarm,correct_neg
+svr,112,11,67,113
+TanSuatLichSu,110,13,74,106
+lgbm,122,1,96,84
+catboost,118,5,93,87
+Blend,122,1,101,79
+rf,113,10,95,85
+dt,108,15,98,82
