@@ -1,10 +1,10 @@
 """
-common.py - Ham dung chung cho ca 4 model M1, M2, M3, M4.
+common.py - Shared functions for the four targets M1, M2, M3, M4.
 
-Nguyen tac:
-  - Moi thuat toan deu tune GIONG NHAU: RandomizedSearchCV + TimeSeriesSplit co gap.
-  - Fit tren TRAIN, chon trong so Blend tren VALID, danh gia tren TEST.
-  - Moi thu luu ra file de tai lap lai duoc.
+Principles:
+  - Every algorithm is tuned THE SAME WAY: RandomizedSearchCV + TimeSeriesSplit with a gap.
+  - Fit on TRAIN, choose Blend weights on VALID, evaluate on TEST.
+  - Everything is saved to files so that results can be reproduced.
 """
 
 from __future__ import annotations
@@ -51,11 +51,11 @@ except ImportError:
 
 
 # ---------------------------------------------------------------- config
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # thư mục gốc repo
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # repository root
 
 
 def load_config(path: str = "config.yaml") -> dict:
-    """Đọc config. Đường dẫn tương đối trong config được tính từ thư mục chứa config."""
+    """Read the config. Relative paths in the config are resolved from the folder that contains it."""
     if not os.path.isabs(path) and not os.path.exists(path):
         path = os.path.join(ROOT, path)
     with open(path, "r", encoding="utf-8") as f:
@@ -72,9 +72,9 @@ def tao_thu_muc(*paths: str) -> None:
         os.makedirs(p, exist_ok=True)
 
 
-# ---------------------------------------------------------------- du lieu
+# ---------------------------------------------------------------- data
 def load_splits(cfg: dict) -> dict:
-    """Doc 3 file train/valid/test da chia san va gan them cac cot target moi."""
+    """Read the pre-split train/valid/test files and attach the target columns."""
     d = cfg["duong_dan"]["processed_dir"]
     tgt_dir = cfg["duong_dan"]["targets_dir"]
     date_col = cfg["cot"]["date"]
@@ -96,7 +96,7 @@ def load_splits(cfg: dict) -> dict:
 
 
 def cot_dac_trung(df: pd.DataFrame, cfg: dict) -> list[str]:
-    """Lay danh sach cot dau vao: bo cot date va moi cot target."""
+    """List the input columns: everything except the date column and the target columns."""
     date_col = cfg["cot"]["date"]
     bo = {date_col}
     for c in df.columns:
@@ -110,7 +110,7 @@ def cot_dac_trung(df: pd.DataFrame, cfg: dict) -> list[str]:
 def chuan_bi_XY(
     df: pd.DataFrame, features: list[str], target: str, thang_loc: list[int] | None, cfg: dict
 ):
-    """Loc theo mua (neu co), bo dong thieu target, tra ve X, y, ngay."""
+    """Filter by season (if any), drop rows without a target, return X, y and dates."""
     date_col = cfg["cot"]["date"]
     d = df.copy()
     if thang_loc:
@@ -120,7 +120,7 @@ def chuan_bi_XY(
 
 
 class BoDienKhuyet:
-    """Dien gia tri thieu bang trung vi cua TAP TRAIN (khong dung du lieu tuong lai)."""
+    """Fill missing values with TRAIN-set medians (no future information is used)."""
 
     def __init__(self):
         self.medians_: pd.Series | None = None
@@ -236,7 +236,7 @@ def khoi_tao_models(task: str, random_state: int = 42) -> dict:
                     "l2_leaf_reg": [1, 3, 5, 10],
                 },
             )
-        zoo["svr"] = (  # giu ten 'svr' cho dong bo, ban chat la SVC
+        zoo["svr"] = (  # keep the name 'svr' for consistency; the model is actually an SVC
             SVC(probability=True, class_weight="balanced", random_state=rs),
             {
                 "C": [0.1, 1, 10, 50, 100],
@@ -249,16 +249,16 @@ def khoi_tao_models(task: str, random_state: int = 42) -> dict:
 
 
 def can_scale(ten_model: str) -> bool:
-    """Chi SVR/SVC can chuan hoa. Cac model cay dung du lieu goc."""
+    """Only SVR/SVC need scaling. Tree models use the raw data."""
     return ten_model == "svr"
 
 
 # ---------------------------------------------------------------- tuning
 def tune_model(model, param_grid: dict, X, y, cfg: dict, task: str, n_jobs: int | None = None):
-    """Cach tune GIONG NHAU cho moi thuat toan va moi model M1-M4.
+    """Identical tuning procedure for every algorithm and every target M1-M4.
 
-    n_jobs: de None thi lay tu config. CatBoost tu chay da luong ben trong,
-    nen truyen n_jobs=1 de tranh xung dot tien trinh tren Windows.
+    n_jobs: None means take the value from the config. CatBoost is multithreaded
+    internally, so pass n_jobs=1 to avoid process conflicts on Windows.
     """
     t = cfg["tuning"]
     cv = TimeSeriesSplit(n_splits=t["n_splits"], gap=t["gap"])
@@ -278,7 +278,7 @@ def tune_model(model, param_grid: dict, X, y, cfg: dict, task: str, n_jobs: int 
         random_state=t["random_state"],
         n_jobs=t["n_jobs"] if n_jobs is None else n_jobs,
         refit=True,
-        error_score=np.nan,   # mot to hop tham so loi thi bo qua, khong dung ca qua trinh
+        error_score=np.nan,   # skip a failing parameter combination instead of stopping the whole search
     )
     search.fit(X, y)
     return search.best_estimator_, search.best_params_, float(search.best_score_)
@@ -316,8 +316,8 @@ def metrics_phan_loai(y_true, prob, nguong: float = 0.5) -> dict:
     false_alarm = int(((pred == 1) & (y_true == 0)).sum())
     correct_neg = int(((pred == 0) & (y_true == 0)).sum())
 
-    pod = hit / (hit + miss) if (hit + miss) else np.nan          # bat duoc bao nhieu su kien that
-    far = false_alarm / (hit + false_alarm) if (hit + false_alarm) else np.nan  # ty le bao dong gia
+    pod = hit / (hit + miss) if (hit + miss) else np.nan          # share of real events detected
+    far = false_alarm / (hit + false_alarm) if (hit + false_alarm) else np.nan  # false-alarm ratio
     csi = hit / (hit + miss + false_alarm) if (hit + miss + false_alarm) else np.nan
 
     out = {
@@ -333,7 +333,7 @@ def metrics_phan_loai(y_true, prob, nguong: float = 0.5) -> dict:
 
 
 def chon_nguong_theo_CSI(y_true, prob) -> float:
-    """Chon nguong xac suat toi uu CSI tren tap VALID (khong dung mac dinh 0.5)."""
+    """Choose the probability threshold that maximises CSI on VALID (instead of the default 0.5)."""
     best_thr, best_csi = 0.5, -1.0
     for thr in np.arange(0.05, 0.96, 0.01):
         m = metrics_phan_loai(y_true, prob, thr)
@@ -344,7 +344,7 @@ def chon_nguong_theo_CSI(y_true, prob) -> float:
 
 # ---------------------------------------------------------------- blend
 def toi_uu_trong_so_blend(preds: dict, y_true, task: str = "hoi_quy") -> dict:
-    """Tim trong so khong am, tong bang 1, toi thieu sai so tren tap VALID."""
+    """Find non-negative weights summing to 1 that minimise the error on VALID."""
     ten = list(preds.keys())
     P = np.column_stack([preds[k] for k in ten])
     y = np.asarray(y_true, dtype=float)
@@ -373,12 +373,12 @@ def du_bao_blend(preds: dict, weights: dict) -> np.ndarray:
     return sum(np.asarray(preds[k], dtype=float) * weights.get(k, 0.0) for k in preds)
 
 
-# ---------------------------------------------------------------- luu tru
+# ---------------------------------------------------------------- saving
 def luu_bo_model(
     thu_muc: str, models: dict, blend_weights: dict, best_params: dict,
     cv_scores: dict, features: list[str], scaler, imputer, ghi_chu: dict, hau_to: str = "",
 ):
-    """Luu model + scaler + feature_list + blend_weights + training_log vao dung thu muc."""
+    """Save models + scaler + feature_list + blend_weights + training_log into the target folder."""
     tao_thu_muc(thu_muc)
     for ten, mdl in models.items():
         joblib.dump(mdl, os.path.join(thu_muc, f"{ten}{hau_to}.pkl"), compress=3)
@@ -426,7 +426,7 @@ def xep_hang(df: pd.DataFrame, cot_sap_xep: str, tang_dan: bool = True) -> pd.Da
 
 
 def them_cai_thien(df: pd.DataFrame, cot: str, ten_baseline: str = "Baseline") -> pd.DataFrame:
-    """Them cot % cai thien so voi baseline (cang nho cang tot doi voi RMSE)."""
+    """Add a column with % improvement over the baseline (lower RMSE is better)."""
     if ten_baseline not in set(df["model"]):
         return df
     base = float(df.loc[df["model"] == ten_baseline, cot].iloc[0])

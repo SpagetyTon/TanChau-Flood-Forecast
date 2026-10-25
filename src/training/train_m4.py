@@ -1,11 +1,11 @@
 """
-train_m4.py - M4: canh bao muc nuoc thap bat thuong mua kho (thang 1-5).
+train_m4.py - M4: warning of abnormally low water in the dry season (Jan-May).
 
-Bai toan phan loai: muc nuoc sau 7 / 15 ngay co xuong duoi 0.5 m khong.
-Danh gia bang POD / FAR / CSI / Brier, khong dung accuracy vi du lieu mat can bang.
+Classification: will the water level fall below 0.5 m after 7 / 15 days?
+Evaluated with POD / FAR / CSI / Brier score, not accuracy, because the classes are imbalanced.
 
-Baseline: tan suat lich su theo thang tu tap TRAIN.
-Ket qua: 05_Ket_qua/M4/  |  Model: 04_Model/M4_han/han07|han15/
+Baseline: monthly historical frequency from the TRAIN set.
+Output: results/M4/  |  Models: models/M4_han/han07|han15/
 """
 
 import os
@@ -19,7 +19,7 @@ from pipeline import train_phan_loai  # noqa: E402
 
 
 def tao_baseline_tan_suat(target: str):
-    """Baseline: xac suat = ty le ngay han cua thang do trong tap train."""
+    """Baseline: probability = share of low-water days in that month in the train set."""
 
     def _fn(df_test, df_train, cfg):
         date_col = cfg["cot"]["date"]
@@ -58,7 +58,7 @@ def main(config_path: str = "config.yaml"):
                       + [c for c in metrics.columns if c not in cot_dau]]
     metrics.to_csv(os.path.join(kq_dir, "metrics.csv"), index=False, encoding="utf-8-sig")
     metrics.to_csv(os.path.join(kq_dir, "xep_hang_model.csv"), index=False, encoding="utf-8-sig")
-    print("\n===== M4: XEP HANG =====")
+    print("\n===== M4: RANKING =====")
     print(metrics.round(4).to_string(index=False))
 
 

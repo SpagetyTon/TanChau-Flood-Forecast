@@ -18,7 +18,7 @@ Common period: 1 January 2015 – 31 December 2024 (3,653 days). Hydrological da
 | `targets/` | M1–M4 targets (created in step 2) | **No** |
 | `support/manifest/` | List of GLDAS URLs used for download | Yes |
 | `support/spatial/` | Tan Chau upstream basin, HydroBASINS level 8 (GeoJSON) | Yes |
-| `descriptions/` | Variable descriptions (19 raw columns, 28 variables, 34 model variables) and feature dictionary (Vietnamese) | Yes |
+| `descriptions/` | Variable descriptions (19 raw columns, 28 variables, 34 model variables) and feature dictionary (`feature_dictionary.xlsx`; Vietnamese original `tu_dien_dac_trung.xlsx`) | Yes |
 
 ## Rebuilding the MRC-dependent files
 

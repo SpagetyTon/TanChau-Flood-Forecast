@@ -1,7 +1,7 @@
 """
-summarize.py - Gop ket qua 4 model thanh mot bang duy nhat + ve hinh cho bao cao.
+summarize.py - Combine the results of the four targets into one table and draw report figures.
 
-Ket qua: 05_Ket_qua/tong_hop_4_model.csv  va  06_Hinh_anh/*.png
+Output: results/tong_hop_4_model.csv  and  results/figures/*.png
 """
 
 import os
@@ -71,9 +71,9 @@ def ve_hinh(cfg: dict):
             nhom["h"] = nhom["horizon"].str.extract(r"(\d+)").astype(int)
             nhom = nhom.sort_values("h")
             ax.plot(nhom["h"], nhom["RMSE"], marker="o", label=model)
-        ax.set_xlabel("Tam du bao (ngay)")
+        ax.set_xlabel("Forecast horizon (days)")
         ax.set_ylabel("RMSE (m)")
-        ax.set_title("M1 - Sai so theo tam du bao")
+        ax.set_title("M1 - Error by forecast horizon")
         ax.legend(fontsize=8)
         ax.grid(alpha=0.3)
         fig.tight_layout()
@@ -86,10 +86,10 @@ def ve_hinh(cfg: dict):
         if d is None or "du_bao_Blend" not in d.columns:
             continue
         fig, ax = plt.subplots(figsize=(11, 4))
-        ax.plot(pd.to_datetime(d["date"]), d["thuc_te"], label="Thuc te", lw=1.2)
+        ax.plot(pd.to_datetime(d["date"]), d["thuc_te"], label="Observed", lw=1.2)
         ax.plot(pd.to_datetime(d["date"]), d["du_bao_Blend"], label="Blend", lw=1.0, alpha=0.85)
-        ax.set_title(f"M1 - Du bao {h} ngay tren tap test (2023-2024)")
-        ax.set_ylabel("Muc nuoc (m)")
+        ax.set_title(f"M1 - {h}-day forecast on the test set (2023-2024)")
+        ax.set_ylabel("Water level (m)")
         ax.legend(fontsize=8)
         ax.grid(alpha=0.3)
         fig.tight_layout()
@@ -101,9 +101,9 @@ def ve_hinh(cfg: dict):
         if d is None or "xac_suat_Blend" not in d.columns:
             continue
         fig, ax = plt.subplots(figsize=(11, 3.5))
-        ax.plot(pd.to_datetime(d["date"]), d["xac_suat_Blend"], label="Xac suat canh bao")
-        ax.fill_between(pd.to_datetime(d["date"]), 0, d["thuc_te"], alpha=0.25, label="Thuc te co han")
-        ax.set_title(f"M4 - Xac suat canh bao han {h} ngay (mua kho tap test)")
+        ax.plot(pd.to_datetime(d["date"]), d["xac_suat_Blend"], label="Warning probability")
+        ax.fill_between(pd.to_datetime(d["date"]), 0, d["thuc_te"], alpha=0.25, label="Observed low water")
+        ax.set_title(f"M4 - {h}-day low-water warning probability (test-set dry season)")
         ax.legend(fontsize=8)
         ax.grid(alpha=0.3)
         fig.tight_layout()
@@ -115,7 +115,7 @@ def main(config_path: str = "config.yaml"):
     cfg = load_config(config_path)
     df = tong_hop(cfg)
     ve_hinh(cfg)
-    print("\n===== TONG HOP 4 MODEL =====")
+    print("\n===== SUMMARY OF THE 4 TARGETS =====")
     print(df.to_string(index=False))
 
 

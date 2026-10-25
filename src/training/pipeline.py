@@ -1,17 +1,17 @@
 """
-pipeline.py - Quy trinh train dung CHUNG cho ca 4 model.
+pipeline.py - Training procedure SHARED by all four targets.
 
-M1, M2, M3 goi train_hoi_quy(); M4 goi train_phan_loai().
-Nho vay cach tune, cach chia du lieu, cach blend va cach danh gia
-la giong het nhau giua cac model, chi khac bien muc tieu.
+M1, M2, M3 call train_hoi_quy() (regression); M4 calls train_phan_loai() (classification).
+Tuning, data splitting, blending and evaluation are therefore identical
+across targets; only the target variable differs.
 
-Quy trinh:
-  1. Loc du lieu theo mua (neu co) va bo dong thieu target
-  2. Dien gia tri thieu bang trung vi cua TRAIN
-  3. Tune tung thuat toan tren TRAIN (RandomizedSearchCV + TimeSeriesSplit co gap)
-  4. Tim trong so Blend tren VALID
-  5. Danh gia tat ca tren TEST, so voi baseline
-  6. Luu model, ket qua, du bao, feature importance
+Procedure:
+  1. Filter by season (if any) and drop rows without a target
+  2. Fill missing values with TRAIN medians
+  3. Tune each algorithm on TRAIN (RandomizedSearchCV + TimeSeriesSplit with a gap)
+  4. Find Blend weights on VALID
+  5. Evaluate everything on TEST against the baseline
+  6. Save models, metrics, predictions and feature importance
 """
 
 from __future__ import annotations
@@ -51,7 +51,7 @@ def _chuan_bi_3_tap(data, features, target, thang_loc, cfg):
 
 
 def _fit_va_du_bao(tap, cfg, task):
-    """Tune tung thuat toan tren train, tra ve model + du bao tren valid/test."""
+    """Tune each algorithm on train; return the models and their valid/test predictions."""
     imputer = BoDienKhuyet().fit(tap["train"]["X"])
     Xtr = imputer.transform(tap["train"]["X"])
     Xva = imputer.transform(tap["valid"]["X"])
@@ -68,20 +68,20 @@ def _fit_va_du_bao(tap, cfg, task):
 
     for ten in cfg["thuat_toan"]:
         if ten not in zoo:
-            print(f"    - bo qua {ten} (chua cai thu vien)")
+            print(f"    - skipping {ten} (library not installed)")
             continue
         mdl, grid = zoo[ten]
         A, B, C = (Xtr_s, Xva_s, Xte_s) if can_scale(ten) else (Xtr, Xva, Xte)
 
         print(f"    - tune {ten} ...", end=" ", flush=True)
-        # CatBoost tu chay da luong, chay song song them bang joblib de gay loi tren Windows
+        # CatBoost is multithreaded; extra joblib parallelism causes errors on Windows
         n_jobs_rieng = 1 if ten == "catboost" else None
         try:
             best, params, score = tune_model(
                 mdl, grid, A, tap["train"]["y"], cfg, task, n_jobs=n_jobs_rieng
             )
         except Exception as e:
-            print(f"LOI - bo qua {ten}: {type(e).__name__}: {str(e)[:200]}")
+            print(f"ERROR - skipping {ten}: {type(e).__name__}: {str(e)[:200]}")
             continue
         print(f"cv_score={score:.4f}")
 
@@ -99,7 +99,7 @@ def _fit_va_du_bao(tap, cfg, task):
     return models, best_params, cv_scores, pred_valid, pred_test, scaler, imputer
 
 
-# ------------------------------------------------------------------ HOI QUY
+# ------------------------------------------------------------------ REGRESSION
 def train_hoi_quy(
     cfg: dict, data: dict, target: str, thang_loc: list[int] | None,
     model_dir: str, ket_qua_dir: str, ten_bai_toan: str,
@@ -108,12 +108,12 @@ def train_hoi_quy(
     print(f"\n=== {ten_bai_toan} | target = {target} ===")
     features = cot_dac_trung(data["train"], cfg)
     tap = _chuan_bi_3_tap(data, features, target, thang_loc, cfg)
-    print(f"  so dong: train={len(tap['train']['y'])}, valid={len(tap['valid']['y'])}, test={len(tap['test']['y'])}")
+    print(f"  rows: train={len(tap['train']['y'])}, valid={len(tap['valid']['y'])}, test={len(tap['test']['y'])}")
 
     models, best_params, cv_scores, pv, pt, scaler, imputer = _fit_va_du_bao(tap, cfg, "hoi_quy")
 
     weights = toi_uu_trong_so_blend(pv, tap["valid"]["y"], "hoi_quy")
-    print(f"  trong so Blend: {weights}")
+    print(f"  Blend weights: {weights}")
     pv["Blend"] = du_bao_blend({k: v for k, v in pv.items() if k in weights}, weights)
     pt["Blend"] = du_bao_blend({k: v for k, v in pt.items() if k in weights}, weights)
 
@@ -150,7 +150,7 @@ def train_hoi_quy(
     return bang
 
 
-# ---------------------------------------------------------------- PHAN LOAI
+# ---------------------------------------------------------------- CLASSIFICATION
 def train_phan_loai(
     cfg: dict, data: dict, target: str, thang_loc: list[int] | None,
     model_dir: str, ket_qua_dir: str, ten_bai_toan: str,
@@ -160,17 +160,17 @@ def train_phan_loai(
     features = cot_dac_trung(data["train"], cfg)
     tap = _chuan_bi_3_tap(data, features, target, thang_loc, cfg)
     ty_le = float(np.mean(tap["train"]["y"]))
-    print(f"  so dong: train={len(tap['train']['y'])}, valid={len(tap['valid']['y'])}, "
-          f"test={len(tap['test']['y'])} | ty le duong tren train={ty_le:.1%}")
+    print(f"  rows: train={len(tap['train']['y'])}, valid={len(tap['valid']['y'])}, "
+          f"test={len(tap['test']['y'])} | positive rate in train={ty_le:.1%}")
 
     models, best_params, cv_scores, pv, pt, scaler, imputer = _fit_va_du_bao(tap, cfg, "phan_loai")
 
     weights = toi_uu_trong_so_blend(pv, tap["valid"]["y"], "phan_loai")
-    print(f"  trong so Blend: {weights}")
+    print(f"  Blend weights: {weights}")
     pv["Blend"] = du_bao_blend({k: v for k, v in pv.items() if k in weights}, weights)
     pt["Blend"] = du_bao_blend({k: v for k, v in pt.items() if k in weights}, weights)
 
-    # baseline cung duoc tinh tren valid de chon nguong cong bang nhu cac model khac
+    # the baseline is also computed on valid so that its threshold is chosen the same way as for the models
     if baseline_fn is not None:
         for ten_tap, kho in [("valid", pv), ("test", pt)]:
             df_ = data[ten_tap]
@@ -179,9 +179,9 @@ def train_phan_loai(
             df_ = df_.loc[tap[ten_tap]["X"].index]
             kho[ten_baseline] = np.asarray(baseline_fn(df_, data["train"], cfg), dtype=float)
 
-    # nguong xac suat chon tren VALID, khong dung mac dinh 0.5
+    # probability threshold chosen on VALID, not the default 0.5
     nguong = {ten: chon_nguong_theo_CSI(tap["valid"]["y"], p) for ten, p in pv.items()}
-    print(f"  nguong xac suat chon tren valid: {nguong}")
+    print(f"  probability thresholds chosen on valid: {nguong}")
 
     rows = []
     y_test = tap["test"]["y"].to_numpy()

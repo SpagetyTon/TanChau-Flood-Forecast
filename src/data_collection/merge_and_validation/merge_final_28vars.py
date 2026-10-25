@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 HERE = Path(__file__).resolve().parent
-PKG = HERE.parents[3]  # thư mục gốc repo
+PKG = HERE.parents[3]  # repository root
 GLDAS = PKG/'data/intermediate/gldas/GLDAS_daily.csv'
 GLOFAS = PKG/'data/intermediate/glofas/GloFAS_6stations_daily.csv'
 TANCHAU = PKG/'data/intermediate/mrc/TanChau_daily.csv'
