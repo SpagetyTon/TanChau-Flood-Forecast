@@ -1,7 +1,7 @@
-"""Kiểm tra mô hình đã lưu: tải models/, dự báo lại trên tập kiểm tra và so với results/*/du_bao_test_*.csv.
-Chạy từ thư mục gốc repo sau khi đã có data/processed và data/targets:
+"""Check the saved models: load models/, predict the test set again and compare with results/*/du_bao_test_*.csv.
+Run from the repository root after data/processed and data/targets have been created:
     python src/training/kiem_tra_model_da_luu.py
-In ra sai khác tuyệt đối lớn nhất của từng thuật toán và của Blend.
+Prints the maximum absolute difference for each algorithm and for the Blend.
 """
 import sys, os, json, warnings, numpy as np, pandas as pd, joblib
 warnings.filterwarnings('ignore')
@@ -28,7 +28,7 @@ def run(mdir, target, thang, resf, clf=False):
     col=[c for c in ref.columns if c.endswith('_Blend')][0]
     out.append(f'Blend:{np.max(np.abs(blend-ref[col].values)):.1e}')
     ok=np.allclose(ref['thuc_te'].values,y.values)
-    print(target, 'n=',len(y), 'y khớp' if ok else 'y LỆCH', ' '.join(out))
+    print(target, 'n=',len(y), 'y matches' if ok else 'y DIFFERS', ' '.join(out))
 R='results'
 for h in [1,2,3,5,7,14]: run(f'models/M1_mucnuoc/ngay{h:02d}',f'target_ngay{h}',None,f'{R}/M1/du_bao_test_target_ngay{h}.csv')
 run('models/M2_soNgayVuotNguong','so_ngay_tren_nguong_10',cfg['mua_vu']['thang_mua_lu'],f'{R}/M2/du_bao_test_so_ngay_tren_nguong_10.csv')

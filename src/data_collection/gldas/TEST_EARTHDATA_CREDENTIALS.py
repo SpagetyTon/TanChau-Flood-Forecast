@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import requests
 
-# Password is embedded in run_gldas_to_daily.py as requested.
-# This helper imports the same credential function without displaying the password.
+# Credentials are read from EARTHDATA_USERNAME / EARTHDATA_PASSWORD or prompted at run time;
+# nothing is stored in the code. This helper reuses the same credential function without displaying the password.
 from run_gldas_to_daily import get_credentials, get_or_create_edl_token
 
 username, password = get_credentials()

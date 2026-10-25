@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent
-REPO = ROOT.parents[2]  # thư mục gốc repo
+REPO = ROOT.parents[2]  # repository root
 gldas_path = REPO / "data/intermediate/gldas/GLDAS_daily.csv"
 glofas_path = REPO / "data/intermediate/glofas/GloFAS_6stations_daily.csv"
 tanchau_path = REPO / "data/intermediate/mrc/TanChau_daily.csv"

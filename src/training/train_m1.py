@@ -1,9 +1,9 @@
 """
-train_m1.py - M1: du bao muc nuoc Tan Chau tai 6 tam du bao (1, 2, 3, 5, 7, 14 ngay).
+train_m1.py - M1: Tan Chau water-level forecast at 6 horizons (1, 2, 3, 5, 7, 14 days).
 
-Baseline: Persistence (muc nuoc ngay mai = muc nuoc hom nay).
-Ket qua: 05_Ket_qua/M1/metrics_theo_horizon.csv, xep_hang_model.csv, du_bao_test_*.csv
-Model:   04_Model/M1_mucnuoc/ngayXX/*.pkl
+Baseline: persistence (tomorrow's water level = today's).
+Output: results/M1/metrics_theo_horizon.csv, xep_hang_model.csv, du_bao_test_*.csv
+Models: models/M1_mucnuoc/ngayXX/*.pkl
 """
 
 import os
@@ -17,7 +17,7 @@ from pipeline import train_hoi_quy  # noqa: E402
 
 
 def baseline_persistence(df_test, df_train, cfg):
-    """Du bao = muc nuoc hien tai."""
+    """Forecast = current water level."""
     return df_test[cfg["cot"]["muc_nuoc_hien_tai"]].to_numpy()
 
 
@@ -47,7 +47,7 @@ def main(config_path: str = "config.yaml"):
     metrics.to_csv(os.path.join(kq_dir, "metrics_theo_horizon.csv"),
                    index=False, encoding="utf-8-sig")
 
-    # bang xep hang tong: trung binh cac chi so qua 6 tam du bao
+    # overall ranking: metrics averaged over the 6 horizons
     tb = (metrics.groupby("model")[["RMSE", "MAE", "R2", "MAPE_%", "WAPE_%"]]
           .mean().reset_index())
     tb = xep_hang(tb, "RMSE", tang_dan=True)
@@ -56,7 +56,7 @@ def main(config_path: str = "config.yaml"):
         tb["cai_thien_vs_baseline_%"] = ((base - tb["RMSE"]) / base * 100).round(2)
     tb.to_csv(os.path.join(kq_dir, "xep_hang_model.csv"), index=False, encoding="utf-8-sig")
 
-    print("\n===== M1: XEP HANG TRUNG BINH QUA 6 TAM DU BAO =====")
+    print("\n===== M1: RANKING AVERAGED OVER 6 HORIZONS =====")
     print(tb.round(4).to_string(index=False))
 
 

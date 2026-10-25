@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 HERE = Path(__file__).resolve().parent
-PKG = HERE.parents[3]  # thư mục gốc repo
+PKG = HERE.parents[3]  # repository root
 YEARLY = PKG / "data/intermediate/earth_engine/yearly_reconstructed"
 OUT = PKG / "data/raw/earth_engine/dataset_raw_2015_2024_rebuilt.csv.gz"
 

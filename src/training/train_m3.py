@@ -1,11 +1,12 @@
 """
-train_m3.py - M3: con bao nhieu ngay nua mua lu BAT DAU / KET THUC.
+train_m3.py - M3: days until the flood season STARTS (M3a) / ENDS (M3b).
 
-Dat theo ngay chu khong theo nam: moi ngay trong mua la mot mau,
-nho vay co hang nghin mau thay vi chi 10 mau nhu cach dat theo nam.
+Framed per day rather than per year: every day in the season is one sample,
+giving thousands of samples instead of only 10 with a per-year framing.
 
-Baseline: trung binh lich su theo thang tu tap TRAIN.
-Ket qua: 05_Ket_qua/M3/  |  Model: 04_Model/M3_muaLu/batdau|ketthuc/
+Baseline: monthly historical mean from the TRAIN set.
+Output: results/M3/  |  Models: models/M3_muaLu/batdau|ketthuc/
+(M3a "batdau" was discarded in the paper; its model files are not kept.)
 """
 
 import os
@@ -45,7 +46,7 @@ def main(config_path: str = "config.yaml"):
     metrics = pd.concat(tat_ca, ignore_index=True)
     metrics.to_csv(os.path.join(kq_dir, "metrics.csv"), index=False, encoding="utf-8-sig")
     metrics.to_csv(os.path.join(kq_dir, "xep_hang_model.csv"), index=False, encoding="utf-8-sig")
-    print("\n===== M3: XEP HANG =====")
+    print("\n===== M3: RANKING =====")
     print(metrics.round(4).to_string(index=False))
 
 

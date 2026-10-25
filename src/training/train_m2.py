@@ -1,8 +1,8 @@
 """
-train_m2.py - M2: du bao so ngay muc nuoc vuot nguong trong 10 ngay toi (mua lu, thang 8-11).
+train_m2.py - M2: number of days with water level above the threshold in the next 10 days (flood season, Aug-Nov).
 
-Baseline: trung binh lich su theo thang (climatology) tinh tu tap TRAIN.
-Ket qua: 05_Ket_qua/M2/  |  Model: 04_Model/M2_soNgayVuotNguong/
+Baseline: monthly historical mean (climatology) from the TRAIN set.
+Output: results/M2/  |  Models: models/M2_soNgayVuotNguong/
 """
 
 import os
@@ -14,7 +14,7 @@ from pipeline import train_hoi_quy  # noqa: E402
 
 
 def tao_baseline_climatology(target: str):
-    """Tra ve ham baseline: du bao = trung binh cua thang do tren tap train."""
+    """Return the baseline function: forecast = mean of that month in the train set."""
 
     def _fn(df_test, df_train, cfg):
         date_col = cfg["cot"]["date"]
@@ -46,7 +46,7 @@ def main(config_path: str = "config.yaml"):
 
     bang.to_csv(os.path.join(kq_dir, "xep_hang_model.csv"), index=False, encoding="utf-8-sig")
     bang.to_csv(os.path.join(kq_dir, "metrics.csv"), index=False, encoding="utf-8-sig")
-    print("\n===== M2: XEP HANG =====")
+    print("\n===== M2: RANKING =====")
     print(bang.round(4).to_string(index=False))
 
 

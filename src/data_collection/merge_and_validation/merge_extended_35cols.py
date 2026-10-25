@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 HERE = Path(__file__).resolve().parent
-PKG = HERE.parents[3]  # thư mục gốc repo
+PKG = HERE.parents[3]  # repository root
 BASE = PKG/'data/merged/Mekong_TanChau_2015_2024_28vars.csv'
 RAW = PKG/'data/raw/earth_engine/dataset_raw_2015_2024.csv.gz'
 OUT = PKG/'data/final/Mekong_TanChau_2015_2024_extended_35cols_rebuilt.csv'
