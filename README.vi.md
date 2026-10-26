@@ -67,6 +67,24 @@ python src/training/summarize.py
 
 Có thể truyền đường dẫn config khác làm tham số: `python src/training/train_m1.py config_khac.yaml`.
 
+## Tái lập phân tích bản đồ ngập và dân số phơi nhiễm
+
+`src/analysis` tính lại bản đồ ngập, phơi nhiễm theo xã, bảng kỹ năng dự báo, các phân tích độ nhạy và kiểm chứng
+Sentinel-1 từ dữ liệu của bản demo, không cần ứng dụng 3D. Chi tiết, dung sai và các sai khác đã biết nằm trong
+`src/analysis/README.md`.
+
+```bash
+pip install -r requirements.txt            # thêm jupyter nếu chạy notebook
+cd src && python -m analysis.reproduce_all          # so 371 giá trị với bài (khoảng 1 phút)
+cd src && python -m analysis.reproduce_all --full   # thêm E7 và Monte Carlo của E4
+python src/analysis/feature_ablation.py             # ablation theo nhóm đặc trưng (Bảng S9), khoảng 6 phút, chạy tiếp được
+```
+
+Notebook trong `notebooks/`: `01_flood_map_and_exposure`, `02_forecast_skill`, `03_sensitivity_and_ablation`,
+`04_sentinel1_validation`, `05_feature_group_ablation`. Đầu vào ở `data/derived/` (dữ liệu mở) và `data/mrc_derived/`
+(sản phẩm dẫn xuất từ dữ liệu MRC; đọc README của thư mục này trước khi dùng lại). Chưa tái tạo: E6, là tính chất của
+bản demo 3D.
+
 ## Thiết lập chính
 
 | Mục | Giá trị |

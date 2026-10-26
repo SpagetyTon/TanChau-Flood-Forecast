@@ -16,3 +16,11 @@ matplotlib
 #   src/data_collection/gldas/requirements.txt
 #   src/data_collection/earth_engine/requirements_gee.txt
 #   src/data_collection/merge_and_validation/requirements.txt
+
+# Notebooks (notebooks/, src/analysis)
+jupyter
+tifffile
+imagecodecs   # only for downloading the GHS-POP tile (population_sources.fetch_ghs_crop)
+rasterio      # only to re-download Sentinel-1 scenes (analysis.sar_validation.fetch_scenes)
+# src/analysis/feature_ablation.py uses the scikit-learn, lightgbm and catboost pinned above. It was also run with
+# scikit-learn 1.7.2 / lightgbm 4.7.0 / catboost 1.2.10 / pandas 2.3.3 / Python 3.10 and gave the same Blend RMSEs.
