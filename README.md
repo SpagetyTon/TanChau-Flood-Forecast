@@ -78,6 +78,23 @@ python src/training/summarize.py
 
 A different config file can be passed as an argument: `python src/training/train_m1.py my_config.yaml`.
 
+## Reproducing the paper's flood-map and exposure analysis
+
+`src/analysis` recomputes the flood maps, commune-level exposure, forecast-skill tables, sensitivity analyses and the
+Sentinel-1 check from the demo's data, without the 3-D app. Details, tolerances and known differences are in
+`src/analysis/README.md`.
+
+```bash
+pip install -r requirements.txt            # plus jupyter for the notebooks
+cd src && python -m analysis.reproduce_all          # 371 values compared with the paper (about 1 min)
+cd src && python -m analysis.reproduce_all --full   # also E7 and the E4 Monte Carlo
+python src/analysis/feature_ablation.py             # feature-group ablation (Table S9), about 6 min, resumable
+```
+
+Notebooks in `notebooks/`: `01_flood_map_and_exposure`, `02_forecast_skill`, `03_sensitivity_and_ablation`,
+`04_sentinel1_validation`, `05_feature_group_ablation`. Inputs are in `data/derived/` (open data) and
+`data/mrc_derived/` (derived from MRC data; read its README before reuse). Not covered: E6, a property of the 3-D demo.
+
 ## Main settings
 
 | Item | Value |
